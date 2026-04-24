@@ -381,7 +381,7 @@ body.no-right-sidebar .pw-hero {
 }
 
 .pw-hero-inner {
-  padding: 48px 24px 80px;
+  padding: 48px 24px 24px;
   max-width: 960px;
   margin: 0 auto;
 }
@@ -397,17 +397,16 @@ body.no-right-sidebar .pw-hero {
   font-size: 16px;
   font-weight: 300;
   opacity: 0.85;
-  margin: 0 0 32px;
+  margin: 0 0 16px;
 }
 
-/* ===== Hero search bar — sits across the color boundary ===== */
 .pw-hero-search-wrap {
-  position: relative;
-  max-width: 640px;
-  margin: 0 auto;
-  /* Pull the search bar down so it's half in hero, half in content area */
-  top: 40px;
-  margin-bottom: -20px;
+    position: relative;
+    max-width: 640px;
+    margin: 0 auto;
+    /* Pull the search bar down so it's half in hero, half in content area */
+    top: 32px;
+    margin-bottom: -20px;
 }
 
 .pw-hero-search {
@@ -781,6 +780,11 @@ body.no-left-sidebar .pw-navbar-menu-btn {
 
 body.no-right-sidebar .pw-footer {
   margin-right: 0;
+}
+
+.math-svg {
+    vertical-align: middle;
+    max-width: 100%;
 }
 
 
@@ -1219,7 +1223,7 @@ body.no-right-sidebar .pw-footer {
 
   /* Hero adjustments */
   .pw-hero-inner {
-    padding: 32px 16px 64px;
+    padding: 32px 16px 24px;
   }
 
   .pw-hero-title {
@@ -1242,5 +1246,9 @@ body.no-right-sidebar .pw-footer {
   .pw-grid-item {
     float: none;
     width: 100%;
+  }
+
+  .pw-hero-search-wrap {
+      top: 24px;
   }
 }

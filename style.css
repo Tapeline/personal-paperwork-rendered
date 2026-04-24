@@ -1,0 +1,1246 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* --- Google Fonts import (Roboto + Roboto Mono) --- */
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Mono:400,500');
+
+
+
+/* ===== Reset ===== */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, details, figcaption, figure,
+footer, header, main, menu, nav, section, summary {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* Box-sizing — CSS2 compatible via vendor prefixes baked in at build,
+   but we keep it simple: just set it on common containers */
+html {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #212121;
+  background: #FAFAFA;
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+a {
+  color: #3F51B5;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+
+/* ===== Navbar ===== */
+.pw-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: #3F51B5;
+  color: #FFFFFF;
+  z-index: 900;
+  -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  -moz-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.pw-navbar-inner {
+  height: 100%;
+  padding: 0 16px;
+  /* clearfix */
+  overflow: hidden;
+}
+
+/* --- Hamburger button (mobile sidebar toggle) --- */
+.pw-navbar-menu-btn {
+  float: left;
+  background: none;
+  border: none;
+  color: #FFFFFF;
+  font-size: 24px;
+  line-height: 56px;
+  cursor: pointer;
+  padding: 0 12px 0 0;
+  display: none; /* shown on mobile via responsive.css */
+}
+
+.pw-navbar-menu-btn:hover {
+  opacity: 0.8;
+}
+
+/* --- Right sidebar toggle (mobile) --- */
+.pw-navbar-toc-btn {
+  float: right;
+  background: none;
+  border: none;
+  color: #FFFFFF;
+  font-size: 24px;
+  line-height: 56px;
+  cursor: pointer;
+  padding: 0 0 0 12px;
+  display: none; /* shown on mobile via responsive.css */
+}
+
+.pw-navbar-toc-btn:hover {
+  opacity: 0.8;
+}
+
+/* --- Brand / title --- */
+.pw-navbar-brand {
+  float: left;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 56px;
+  color: #FFFFFF;
+  text-decoration: none;
+  padding-right: 24px;
+  white-space: nowrap;
+}
+
+.pw-navbar-brand:hover {
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+/* --- Navbar search --- */
+.pw-navbar-search {
+  overflow: hidden; /* takes remaining space */
+  padding: 10px 0;
+}
+
+.pw-navbar-search-input {
+  width: 100%;
+  max-width: 480px;
+  height: 36px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.15);
+  color: #FFFFFF;
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  outline: none;
+}
+
+.pw-navbar-search-input:focus {
+  background: rgba(255,255,255,0.25);
+}
+
+/* Placeholder color — uses vendor prefixes for broad compat */
+.pw-navbar-search-input::-webkit-input-placeholder { color: rgba(255,255,255,0.7); }
+.pw-navbar-search-input:-moz-placeholder           { color: rgba(255,255,255,0.7); }
+.pw-navbar-search-input::-moz-placeholder           { color: rgba(255,255,255,0.7); }
+.pw-navbar-search-input:-ms-input-placeholder       { color: rgba(255,255,255,0.7); }
+
+
+/* ===== Shared sidebar base ===== */
+.pw-sidebar {
+  position: fixed;
+  top: 56px;
+  bottom: 0;
+  width: 280px;
+  background: #FFFFFF;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 800;
+  border-right: 1px solid #BDBDBD;
+}
+
+.pw-sidebar-inner {
+  padding: 16px 0;
+}
+
+/* --- Left sidebar (global doc TOC) --- */
+.pw-sidebar-left {
+  left: 0;
+  border-right: 1px solid #BDBDBD;
+  border-left: none;
+}
+
+/* --- Right sidebar (on-page TOC) --- */
+.pw-sidebar-right {
+  right: 0;
+  border-right: none;
+  border-left: 1px solid #BDBDBD;
+}
+
+/* ===== Tree-structured TOC ===== */
+.pw-toc-tree {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pw-toc-tree .pw-toc-tree {
+  padding-left: 16px;
+}
+
+.pw-toc-item {
+  margin: 0;
+  padding: 0;
+}
+
+/* Toggle button for collapsible sections */
+.pw-toc-toggle {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 8px 16px;
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #212121;
+  cursor: pointer;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.pw-toc-toggle:hover {
+  background: #C5CAE9;
+}
+
+/* Arrow indicator for collapsible items */
+.pw-toc-arrow {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 4px 0 4px 6px;
+  border-color: transparent transparent transparent #757575;
+  margin-right: 8px;
+  vertical-align: middle;
+  /* transition not in CSS2, but harmless progressive enhancement */
+}
+
+.pw-toc-item.is-expanded > .pw-toc-toggle .pw-toc-arrow {
+  border-width: 6px 4px 0 4px;
+  border-color: #757575 transparent transparent transparent;
+}
+
+/* Collapsed children are hidden */
+.pw-toc-item .pw-toc-children {
+  display: none;
+}
+
+.pw-toc-item.is-expanded > .pw-toc-children {
+  display: block;
+}
+
+/* Leaf link (no children) */
+.pw-toc-link {
+  display: block;
+  padding: 8px 16px 8px 30px;
+  font-size: 14px;
+  color: #757575;
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.pw-toc-link:hover {
+  background: #C5CAE9;
+  color: #212121;
+  text-decoration: none;
+}
+
+.pw-toc-link.is-active {
+  color: #3F51B5;
+  font-weight: 500;
+  border-right: 3px solid #3F51B5;
+}
+
+/* Right sidebar active link uses left border instead */
+.pw-sidebar-right .pw-toc-link.is-active {
+  border-right: none;
+  border-left: 3px solid #3F51B5;
+}
+
+/* --- Sidebar title/header --- */
+.pw-sidebar-title {
+  padding: 8px 16px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #BDBDBD;
+}
+
+/* ===== Overlay for mobile ===== */
+.pw-sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 799;
+}
+
+.pw-sidebar-overlay.is-visible {
+  display: block;
+}
+
+
+/* ===== Hero section ===== */
+.pw-hero {
+  background: #3F51B5;
+  color: #FFFFFF;
+  padding-top: 56px; /* push below fixed navbar */
+  /* Respect sidebar widths so content is centered in the content area */
+  margin-left: 280px;
+  margin-right: 280px;
+  text-align: center;
+}
+
+/* When right sidebar is hidden, hero should not reserve space for it */
+body.no-right-sidebar .pw-hero {
+  margin-right: 0;
+}
+
+.pw-hero-inner {
+  padding: 48px 24px 80px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.pw-hero-title {
+  font-size: 32px;
+  font-weight: 400;
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+
+.pw-hero-subtitle {
+  font-size: 16px;
+  font-weight: 300;
+  opacity: 0.85;
+  margin: 0 0 32px;
+}
+
+/* ===== Hero search bar — sits across the color boundary ===== */
+.pw-hero-search-wrap {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+  /* Pull the search bar down so it's half in hero, half in content area */
+  top: 40px;
+  margin-bottom: -20px;
+}
+
+.pw-hero-search {
+  width: 100%;
+  height: 52px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 2px;
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  color: #212121;
+  background: #FFFFFF;
+  -webkit-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  -moz-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  outline: none;
+}
+
+.pw-hero-search:focus {
+  -webkit-box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  -moz-box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.pw-hero-search::-webkit-input-placeholder { color: #BDBDBD; }
+.pw-hero-search:-moz-placeholder           { color: #BDBDBD; }
+.pw-hero-search::-moz-placeholder           { color: #BDBDBD; }
+.pw-hero-search:-ms-input-placeholder       { color: #BDBDBD; }
+
+/* ===== Tag badges in hero ===== */
+.pw-hero-tags {
+  margin: 0 0 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.pw-hero-tags li {
+  display: inline;
+}
+
+.pw-hero-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  margin: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #FFFFFF;
+  background: rgba(255,255,255,0.2);
+  border-radius: 12px;
+  text-decoration: none;
+}
+
+.pw-hero-tag:hover {
+  background: rgba(255,255,255,0.35);
+  text-decoration: none;
+}
+
+
+/* ===== Page layout wrapper ===== */
+.pw-page {
+  padding-top: 56px;
+  min-height: 100vh;
+}
+
+/* When hero is present, no extra top-padding needed */
+.pw-page.has-hero {
+  padding-top: 0;
+}
+
+/* ===== Main content area ===== */
+/*
+  Float-based 3-column layout:
+  - Left sidebar:  fixed 280px
+  - Right sidebar: fixed 280px
+  - Center:        fluid, takes remainder
+*/
+.pw-content-area {
+  margin-left: 280px;
+  margin-right: 280px;
+  padding: 40px 24px 80px;
+}
+
+/* ===== Content card (Material paper) ===== */
+.pw-card {
+  max-width: 960px;
+  margin: 0 auto;
+  background: #FFFFFF;
+  border-radius: 2px;
+  -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  padding: 40px 48px;
+}
+
+/* ===== Typography inside card ===== */
+.pw-card h1 {
+  font-size: 34px;
+  font-weight: 400;
+  color: #212121;
+  margin: 0 0 16px;
+  line-height: 1.2;
+}
+
+.pw-card h2 {
+  font-size: 24px;
+  font-weight: 400;
+  color: #212121;
+  margin: 32px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #BDBDBD;
+  line-height: 1.3;
+}
+
+.pw-card h3 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #212121;
+  margin: 28px 0 8px;
+  line-height: 1.3;
+}
+
+.pw-card h4 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #212121;
+  margin: 24px 0 8px;
+  line-height: 1.4;
+}
+
+.pw-card h5,
+.pw-card h6 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #757575;
+  margin: 20px 0 8px;
+  line-height: 1.4;
+}
+
+.pw-card p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #212121;
+  margin: 0 0 16px;
+}
+
+.pw-card ul,
+.pw-card ol {
+  margin: 0 0 16px 24px;
+}
+
+.pw-card ul {
+  list-style: disc;
+}
+
+.pw-card ol {
+  list-style: decimal;
+}
+
+.pw-card li {
+  font-size: 16px;
+  line-height: 1.7;
+  margin-bottom: 4px;
+}
+
+.pw-card li > ul,
+.pw-card li > ol {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.pw-card strong {
+  font-weight: 700;
+}
+
+.pw-card em {
+  font-style: italic;
+}
+
+.pw-card hr {
+  border: none;
+  border-top: 1px solid #BDBDBD;
+  margin: 24px 0;
+}
+
+.pw-card a {
+  color: #3F51B5;
+  text-decoration: none;
+}
+
+.pw-card a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Tag badges (inline) ===== */
+.pw-badge,
+a.pw-badge,
+.pw-card a.pw-badge,
+.pw-meta a.pw-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #FFFFFF;
+  background: #3F51B5;
+  border-radius: 12px;
+  vertical-align: middle;
+  margin: 2px 4px 2px 0;
+  text-decoration: none;
+}
+
+.pw-badge:hover,
+a.pw-badge:hover,
+.pw-card a.pw-badge:hover,
+.pw-meta a.pw-badge:hover {
+  background: #303F9F;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+/* Secondary/outline badges */
+.pw-badge-outline,
+a.pw-badge-outline,
+.pw-card a.pw-badge-outline,
+.pw-meta a.pw-badge-outline {
+  background: transparent;
+  color: #3F51B5;
+  border: 1px solid #3F51B5;
+}
+
+.pw-badge-outline:hover,
+a.pw-badge-outline:hover,
+.pw-card a.pw-badge-outline:hover,
+.pw-meta a.pw-badge-outline:hover {
+  background: #C5CAE9;
+  color: #3F51B5;
+}
+
+/* ===== Page meta (date, tags row) ===== */
+.pw-meta {
+  margin: 0 0 24px;
+  font-size: 14px;
+  color: #757575;
+}
+
+.pw-meta-date {
+  display: inline-block;
+  margin-right: 16px;
+}
+
+/* ===== No right sidebar variant ===== */
+/*
+  Pages that set page_class to "no-right-sidebar" get the right sidebar
+  hidden and the content area takes the freed space.
+*/
+.pw-page.no-right-sidebar ~ .pw-sidebar-right,
+.no-right-sidebar .pw-sidebar-right {
+  display: none;
+}
+
+body.no-right-sidebar .pw-content-area,
+.pw-page.no-right-sidebar .pw-content-area {
+  margin-right: 0;
+}
+
+/*
+  When the body has the class, also hide the TOC toggle button in navbar
+  since there's no right sidebar to toggle.
+*/
+body.no-right-sidebar .pw-navbar-toc-btn {
+  display: none;
+}
+
+/* ===== No left sidebar variant ===== */
+body.no-left-sidebar .pw-content-area,
+.pw-page.no-left-sidebar .pw-content-area {
+  margin-left: 0;
+}
+
+body.no-left-sidebar .pw-sidebar-left {
+  display: none;
+}
+
+body.no-left-sidebar .pw-navbar-menu-btn {
+  display: none;
+}
+
+/* ===== Card grid (float-based responsive) ===== */
+.pw-card-grid {
+  margin: 0 -12px;
+  /* clearfix */
+  overflow: hidden;
+}
+
+.pw-card-grid:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.pw-grid-item {
+  float: left;
+  width: 50%;
+  padding: 12px;
+}
+
+.pw-grid-card {
+  background: #FFFFFF;
+  border-radius: 2px;
+  -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  padding: 24px;
+  height: 100%;
+  display: block;
+  color: #212121;
+  text-decoration: none;
+}
+
+.pw-grid-card:hover {
+  -webkit-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  -moz-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  text-decoration: none;
+}
+
+.pw-grid-card-title {
+  font-size: 20px;
+  font-weight: 500;
+  color: #212121;
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+
+.pw-grid-card-desc {
+  font-size: 14px;
+  color: #757575;
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+
+.pw-grid-card .pw-badge {
+  font-size: 11px;
+}
+
+/* Section label above a card group */
+.pw-section-label {
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #757575;
+  margin: 32px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #BDBDBD;
+}
+
+.pw-section-label:first-child {
+  margin-top: 0;
+}
+
+/* ===== Footer ===== */
+.pw-footer {
+  margin-left: 280px;
+  margin-right: 280px;
+  padding: 24px;
+  text-align: center;
+  font-size: 13px;
+  color: #BDBDBD;
+  border-top: 1px solid #BDBDBD;
+}
+
+body.no-right-sidebar .pw-footer {
+  margin-right: 0;
+}
+
+
+/* ============================================================
+   BLOCKQUOTES
+   ============================================================ */
+.pw-card blockquote {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border-left: 4px solid #BDBDBD;
+  background: #F5F5F5;
+  color: #757575;
+  font-style: italic;
+}
+
+.pw-card blockquote p {
+  margin: 0 0 8px;
+  color: inherit;
+}
+
+.pw-card blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* ============================================================
+   ADMONITIONS  (Obsidian-style callouts rendered by markdown-it)
+   Markup: <div class="callout" data-callout="note">
+             <div class="callout-title">...</div>
+             <div class="callout-content">...</div>
+           </div>
+   ============================================================ */
+.pw-card .callout {
+  margin: 0 0 16px;
+  border-left: 4px solid #00BCD4;
+  border-radius: 2px;
+  background: #E1F5FE;
+  overflow: hidden;
+}
+
+.pw-card .callout-title {
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #212121;
+}
+
+.pw-card .callout-content {
+  padding: 0 16px 12px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.pw-card .callout-content p {
+  margin: 0 0 8px;
+}
+
+.pw-card .callout-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* --- Callout type variants --- */
+/* Note / Info (default) */
+.pw-card .callout[data-callout="note"],
+.pw-card .callout[data-callout="info"] {
+  border-left-color: #00BCD4;
+  background: #E1F5FE;
+}
+
+/* Tip / Success */
+.pw-card .callout[data-callout="tip"],
+.pw-card .callout[data-callout="success"] {
+  border-left-color: #4CAF50;
+  background: #E8F5E9;
+}
+
+/* Warning / Caution */
+.pw-card .callout[data-callout="warning"],
+.pw-card .callout[data-callout="caution"] {
+  border-left-color: #FF9800;
+  background: #FFF3E0;
+}
+
+/* Danger / Error / Bug */
+.pw-card .callout[data-callout="danger"],
+.pw-card .callout[data-callout="error"],
+.pw-card .callout[data-callout="bug"] {
+  border-left-color: #F44336;
+  background: #FFEBEE;
+}
+
+/* Abstract / Summary / TLDR */
+.pw-card .callout[data-callout="abstract"],
+.pw-card .callout[data-callout="summary"],
+.pw-card .callout[data-callout="tldr"] {
+  border-left-color: #2196F3;
+  background: #E3F2FD;
+}
+
+/* Example */
+.pw-card .callout[data-callout="example"] {
+  border-left-color: #9C27B0;
+  background: #F3E5F5;
+}
+
+/* Quote / Cite */
+.pw-card .callout[data-callout="quote"],
+.pw-card .callout[data-callout="cite"] {
+  border-left-color: #BDBDBD;
+  background: #F5F5F5;
+}
+
+/* ============================================================
+   SPOILERS / DETAILS
+   Uses <details>/<summary> elements styled as Material card
+   ============================================================ */
+.pw-card details {
+  margin: 0 0 16px;
+  border: 1px solid #BDBDBD;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.pw-card details summary {
+  padding: 12px 16px;
+  font-weight: 500;
+  cursor: pointer;
+  background: #FAFAFA;
+  color: #212121;
+  font-size: 14px;
+  list-style: none;
+}
+
+.pw-card details summary::-webkit-details-marker {
+  display: none;
+}
+
+.pw-card details summary:before {
+  content: "\25B6\00a0"; /* right-pointing triangle */
+  font-size: 10px;
+  color: #757575;
+}
+
+.pw-card details[open] summary:before {
+  content: "\25BC\00a0"; /* down-pointing triangle */
+}
+
+.pw-card details[open] summary {
+  border-bottom: 1px solid #BDBDBD;
+}
+
+.pw-card details > *:not(summary) {
+  padding: 0 16px;
+}
+
+.pw-card details > p:first-of-type {
+  margin-top: 12px;
+}
+
+/* ============================================================
+   INLINE CODE & CODE BLOCKS
+   ============================================================ */
+
+/* Inline code */
+.pw-card code {
+  font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+  font-size: 0.875em;
+  background: #F5F5F5;
+  padding: 2px 6px;
+  border-radius: 2px;
+  color: #C62828;
+}
+
+/* Fenced code blocks */
+.pw-card pre {
+  margin: 0 0 16px;
+  padding: 16px;
+  background: #263238;
+  color: #ECEFF1;
+  border-radius: 2px;
+  overflow-x: auto;     /* horizontal scroll for wide code */
+  -webkit-overflow-scrolling: touch;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.pw-card pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+  white-space: pre;
+}
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+
+/* Wrapper allows horizontal scrolling for wide tables */
+.pw-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 0 16px;
+}
+
+.pw-card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin: 0 0 16px;
+  min-width: 100%;
+}
+
+.pw-card thead th {
+  background: #F5F5F5;
+  font-weight: 500;
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 2px solid #BDBDBD;
+  color: #212121;
+  white-space: nowrap;
+}
+
+.pw-card tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #EEEEEE;
+  color: #212121;
+  vertical-align: top;
+}
+
+.pw-card tbody tr:hover {
+  background: #FAFAFA;
+}
+
+/* ============================================================
+   MATH BLOCKS (rendered as SVG/PNG images)
+   ============================================================ */
+
+/* Block-level math — centered with some margin */
+.pw-math-block {
+  text-align: center;
+  margin: 24px 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.pw-math-block img,
+.pw-math-block svg {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* Inline math */
+.pw-math-inline {
+  display: inline;
+  vertical-align: middle;
+}
+
+.pw-math-inline img,
+.pw-math-inline svg {
+  height: 1.2em;
+  vertical-align: middle;
+}
+
+/* ============================================================
+   FOOTNOTES
+   ============================================================ */
+.pw-card .footnotes {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid #BDBDBD;
+  font-size: 13px;
+  color: #757575;
+}
+
+.pw-card .footnotes ol {
+  list-style: decimal;
+  margin-left: 20px;
+}
+
+.pw-card .footnotes li {
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+/* ============================================================
+   TASK LISTS (checkboxes from markdown)
+   ============================================================ */
+.pw-card .task-list {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.pw-card .task-list li {
+  padding-left: 24px;
+  position: relative;
+}
+
+.pw-card .task-list input[type="checkbox"] {
+  position: absolute;
+  left: 0;
+  top: 6px;
+}
+
+/* ============================================================
+   IMAGES (inside content)
+   ============================================================ */
+.pw-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 2px;
+  margin: 8px 0;
+}
+
+/* ============================================================
+   VIDEO, AUDIO, IFRAME (embedded media)
+   ============================================================ */
+.pw-card video {
+  max-width: 100%;
+  height: auto;
+  border-radius: 2px;
+  margin: 8px 0;
+  display: block;
+}
+
+.pw-card audio {
+  max-width: 100%;
+  margin: 8px 0;
+  display: block;
+}
+
+.pw-card iframe {
+  max-width: 100%;
+  border: none;
+  border-radius: 2px;
+  margin: 8px 0;
+  display: block;
+}
+
+
+/*
+  Breakpoints:
+    - Desktop: > 1200px  — both sidebars visible
+    - Tablet:  769-1200px — only left sidebar visible, right sidebar hidden
+    - Mobile:  <= 768px   — both sidebars hidden, hamburger menu appears
+*/
+
+/* ===== Tablet: hide right sidebar ===== */
+@media screen and (max-width: 1200px) {
+  .pw-sidebar-right {
+    display: none;
+  }
+
+  .pw-sidebar-right.is-open {
+    display: block;
+    z-index: 810;
+  }
+
+  .pw-content-area {
+    margin-right: 0;
+  }
+
+  .pw-hero {
+    margin-right: 0;
+  }
+
+  .pw-footer {
+    margin-right: 0;
+  }
+
+  /* Show the on-page TOC toggle button */
+  .pw-navbar-toc-btn {
+    display: block;
+  }
+}
+
+/* ===== Mobile: hide both sidebars ===== */
+@media screen and (max-width: 768px) {
+  .pw-sidebar-left {
+    display: none;
+  }
+
+  .pw-sidebar-left.is-open {
+    display: block;
+    z-index: 810;
+  }
+
+  .pw-sidebar-right {
+    display: none;
+  }
+
+  .pw-sidebar-right.is-open {
+    display: block;
+    z-index: 810;
+  }
+
+  .pw-content-area {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 24px 16px 60px;
+  }
+
+  .pw-hero {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .pw-footer {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* Show hamburger buttons */
+  .pw-navbar-menu-btn {
+    display: block;
+  }
+
+  .pw-navbar-toc-btn {
+    display: block;
+  }
+
+  /* Adjust card padding for mobile */
+  .pw-card {
+    padding: 24px 20px;
+  }
+
+  .pw-card h1 {
+    font-size: 26px;
+  }
+
+  .pw-card h2 {
+    font-size: 20px;
+  }
+
+  /* Hero adjustments */
+  .pw-hero-inner {
+    padding: 32px 16px 64px;
+  }
+
+  .pw-hero-title {
+    font-size: 24px;
+  }
+
+  .pw-hero-search {
+    height: 44px;
+    font-size: 14px;
+  }
+
+  /* Navbar brand may be too long on small screens */
+  .pw-navbar-brand {
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Card grid goes single-column on mobile */
+  .pw-grid-item {
+    float: none;
+    width: 100%;
+  }
+}

@@ -69,7 +69,7 @@ footer, header, main, menu, nav, section, summary {
   vertical-align: baseline;
 }
 
-/* Box-sizing — CSS2 compatible via vendor prefixes baked in at build,
+/* Box-sizing â€” CSS2 compatible via vendor prefixes baked in at build,
    but we keep it simple: just set it on common containers */
 html {
   font-size: 16px;
@@ -208,7 +208,7 @@ ul, ol {
   background: rgba(255,255,255,0.25);
 }
 
-/* Placeholder color — uses vendor prefixes for broad compat */
+/* Placeholder color â€” uses vendor prefixes for broad compat */
 .pw-navbar-search-input::-webkit-input-placeholder { color: rgba(255,255,255,0.7); }
 .pw-navbar-search-input:-moz-placeholder           { color: rgba(255,255,255,0.7); }
 .pw-navbar-search-input::-moz-placeholder           { color: rgba(255,255,255,0.7); }
@@ -1023,7 +1023,7 @@ body.no-right-sidebar .pw-footer {
    MATH BLOCKS (rendered as SVG/PNG images)
    ============================================================ */
 
-/* Block-level math — centered with some margin */
+/* Block-level math â€” centered with some margin */
 .pw-math-block {
   text-align: center;
   margin: 24px 0;
@@ -1129,9 +1129,9 @@ body.no-right-sidebar .pw-footer {
 
 /*
   Breakpoints:
-    - Desktop: > 1200px  — both sidebars visible
-    - Tablet:  769-1200px — only left sidebar visible, right sidebar hidden
-    - Mobile:  <= 768px   — both sidebars hidden, hamburger menu appears
+    - Desktop: > 1200px  â€” both sidebars visible
+    - Tablet:  769-1200px â€” only left sidebar visible, right sidebar hidden
+    - Mobile:  <= 768px   â€” both sidebars hidden, hamburger menu appears
 */
 
 /* ===== Tablet: hide right sidebar ===== */

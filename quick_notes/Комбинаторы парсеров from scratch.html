@@ -1,0 +1,920 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Комбинаторы парсеров from scratch</title>
+  <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body class="">
+
+
+<nav class="pw-navbar">
+  <div class="pw-navbar-inner">
+    <button class="pw-navbar-menu-btn" id="pw-navbar-menu-btn" type="button" title="Menu">&#9776;</button>
+    <a class="pw-navbar-brand" href="../">
+      Paperwork
+    </a>
+    <button class="pw-navbar-toc-btn" id="pw-navbar-toc-btn" type="button" title="Page TOC">&#9776;</button>
+    <div class="pw-navbar-search">
+      <input class="pw-navbar-search-input" id="pw-navbar-search" type="text" placeholder="Search...">
+    </div>
+  </div>
+</nav>
+
+
+<div class="pw-sidebar-overlay" id="pw-sidebar-overlay"></div>
+
+
+<aside class="pw-sidebar pw-sidebar-left" id="pw-sidebar-left">
+  <div class="pw-sidebar-inner">
+    <div class="pw-sidebar-title">Documentation</div>
+    
+
+<ul class="pw-toc-tree">
+  
+  <li class="pw-toc-item is-expanded">
+    <button class="pw-toc-toggle" type="button">
+      <span class="pw-toc-arrow"></span>Collections
+    </button>
+    <div class="pw-toc-children">
+      <ul class="pw-toc-tree">
+        
+        <li class="pw-toc-item">
+          <a class="pw-toc-link" href="../EGE-Informatika/index.html">ЕГЭ Информатика</a>
+        </li>
+        
+      </ul>
+    </div>
+  </li>
+  
+  
+  <li class="pw-toc-item is-expanded">
+    <button class="pw-toc-toggle" type="button">
+      <span class="pw-toc-arrow"></span>Quick Notes
+    </button>
+    <div class="pw-toc-children">
+      <ul class="pw-toc-tree">
+        
+        <li class="pw-toc-item">
+          <a class="pw-toc-link" href="../quick_notes/Из истории алгебраических типов данных.html">Из истории алгебраических типов данных</a>
+        </li>
+        
+        <li class="pw-toc-item">
+          <a class="pw-toc-link" href="../quick_notes/Комбинаторы парсеров from scratch.html">Комбинаторы парсеров from scratch</a>
+        </li>
+        
+      </ul>
+    </div>
+  </li>
+  
+</ul>
+
+  </div>
+</aside>
+
+
+<aside class="pw-sidebar pw-sidebar-right" id="pw-sidebar-right">
+  <div class="pw-sidebar-inner">
+    <div class="pw-sidebar-title">On this page</div>
+    <ul class="pw-toc-tree">
+<li class="pw-toc-item" style="padding-left: 0px"><a class="pw-toc-link" href="#Parsing-teksta--bol">Парсинг текста — боль</a></li>
+<li class="pw-toc-item" style="padding-left: 0px"><a class="pw-toc-link" href="#Kak-vygljadit-parser">Как выглядит парсер?</a></li>
+<li class="pw-toc-item" style="padding-left: 0px"><a class="pw-toc-link" href="#Parser-pervyj-moj">Парсер первый мой</a></li>
+<li class="pw-toc-item" style="padding-left: 0px"><a class="pw-toc-link" href="#Kombinatory">Комбинаторы</a></li>
+<li class="pw-toc-item" style="padding-left: 0px"><a class="pw-toc-link" href="#Kombinator-vybora">Комбинатор выбора</a></li>
+<li class="pw-toc-item" style="padding-left: 0px"><a class="pw-toc-link" href="#Kombinator-mnozhestva">Комбинатор множества</a></li>
+<li class="pw-toc-item" style="padding-left: 0px"><a class="pw-toc-link" href="#Sborka-rezultata">Сборка результата</a></li>
+<li class="pw-toc-item" style="padding-left: 0px"><a class="pw-toc-link" href="#JSON">JSON</a></li>
+<li class="pw-toc-item" style="padding-left: 0px"><a class="pw-toc-link" href="#Nemnozhko-formalizma">Немножко формализма</a></li>
+<li class="pw-toc-item" style="padding-left: 0px"><a class="pw-toc-link" href="#Nemnogo-o-grustnom">Немного о грустном</a></li>
+<li class="pw-toc-item" style="padding-left: 0px"><a class="pw-toc-link" href="#V-zakljuchenie">В заключение</a></li>
+</ul>
+  </div>
+</aside>
+
+
+
+<div class="pw-hero">
+  <div class="pw-hero-inner">
+    <h1 class="pw-hero-title">Комбинаторы парсеров from scratch</h1>
+    <p class="pw-hero-subtitle">April 24, 2026</p>
+    <ul class="pw-hero-tags">
+      
+    </ul>
+    <div class="pw-hero-search-wrap">
+      <input class="pw-hero-search" id="pw-hero-search" type="text" placeholder="Search notes...">
+    </div>
+  </div>
+</div>
+
+
+
+<div class="pw-page has-hero">
+  <div class="pw-content-area">
+    
+<div class="pw-card">
+  <div class="pw-meta">
+    
+  </div>
+  <div class="pw-card-content">
+    <p>Привет, Хабр!</p>
+<p>Парсер-комбинаторы и синтаксический анализ в целом — очень интересные темы. Однако материалов со сравнительно низким порогом входа маловато, а в существующих статьях на читателя сразу обрушивается поток терминов и формальностей.</p>
+<p>Эту статью я позиционирую как введение в парсер-комбинаторы &quot;для чайников&quot; (или &quot;для самых маленьких&quot; — как вам больше нравится). Цель: попытаться рассказать простым языком и с примерами так, чтобы Вы могли после прочтения написать свой парсер без какого-либо предварительного опыта и знаний в области синтаксического анализа.</p>
+<p>Приятного чтения!</p>
+<h1 id="Parsing-teksta--bol">Парсинг текста — боль</h1>
+<p>Когда-то перед программистом встаёт задача сделать разбор (парсинг) текста. Это может быть собственный DSL на проекте, невозможность существующих библиотек для парсинга удовлетворить потребности проекта или обычный just for fun (tm). Вне зависимости от этого, парсинг — довольно сложное мероприятие. Кто-то может попытаться использовать RegEx, но скоро поймёт, что парсить что-то сложнее телефонных номеров уже очень больно или даже невозможно. Как говорил Джейми Завински: &quot;Некоторые люди, столкнувшись с проблемой, думают: &quot;Я знаю, я использую регулярные выражения&quot;. Теперь у них две проблемы&quot;.</p>
+<p>Что может требовать парсинга? Например:</p>
+<ul>
+<li>свой собственный формат конфигурационных файлов (допустим, вы хотите INI-файл, но с вложенностью)</li>
+<li>математические выражения, которые вводит пользователь (чтобы превратить строку &quot;2 + 2 * 2&quot; в правильное дерево вычислений)</li>
+<li>мини-язык сценариев для ботов или NPC в вашей игре</li>
+<li>и куча других применений.</li>
+</ul>
+<h1 id="Kak-vygljadit-parser">Как выглядит парсер?</h1>
+<p>Парсер — обычная функция, которая пытается &quot;откусить&quot; кусочек от начала текста. В зависимости от того, что у нас за парсер и что за входной текст, мы можем либо получить откушенный кусочек + остаток текста, либо ошибку, если парсер посчитал, что такая строка ему не подходит. Представим, что у нас есть уже готовый парсер цифр. Вот как он себя будет вести.
+<img src="assets/comb1.png" alt="" />
+На вход парсеру подали одну цифру, он посмотрел на начало строки, нашёл там эту цифру, &quot;забрал&quot; её и отдал ответ: &quot;Я нашёл такую подстроку (1), после меня никаких символов не осталось&quot;. Посмотрим на другой пример:
+<img src="assets/comb2.png" alt="" />
+На этот раз мы скормили нашему парсеру строку &quot;1cm&quot; (следует читать как &quot;1 сантиметр&quot;). Парсер опять посмотрел на начало строки, увидел там цифру, &quot;откусил&quot; её и ответил: &quot;Я нашёл подстроку 1, после меня осталась ещё строка cm&quot;. Обратите внимание на то, что присутствие каких-то символов после не заставляет парсер &quot;упасть&quot;. Посмотрим ещё на один пример:
+<img src="assets/comb3.png" alt="" />
+Несмотря на то, что после 1 есть ещё цифры, парсер они не волнуют, потому что его задача — спарсить только <strong>одну</strong> цифру. Что идёт дальше — неважно. Можно ли применить его ещё раз, нельзя — без разницы. Парсер отрабатывает один раз и возвращает то, что ему удалось спарсить + остаток. Последний пример:
+<img src="assets/comb4.png" alt="" />
+Парсер посмотрел на начало строки и не нашёл там никакой цифры! В таком случае, ему нечего нам сказать, кроме &quot;я не смог&quot;.</p>
+<p>Давайте посмотрим, как это будет выглядеть в коде:</p>
+<pre><code class="language-ts">&gt;&gt;&gt; parseDigit(&quot;1&quot;)
+[&quot;1&quot;, &quot;&quot;]
+&gt;&gt;&gt; parseDigit(&quot;1cm&quot;)
+[&quot;1&quot;, &quot;cm&quot;]
+&gt;&gt;&gt; parseDigit(&quot;123&quot;)
+[&quot;1&quot;, &quot;23&quot;]
+&gt;&gt;&gt; parseDigit(&quot;hello&quot;)
+null
+</code></pre>
+<p>В первом случае у парсера получилось &quot;откусить&quot; подходящую ему подстроку с начала текста (1). Он нам вернул то, что ему удалось спарсить, и то, что осталось. Так как 1 и было всем текстом, то осталась пустая строка.</p>
+<p>Во втором случае ему так же получилось спарсить 1. Единственное различие — остаток. Парсер на него не обращает никакого внимания. Это видно из третьего случая: несмотря на то, что за 1 сразу стоит 23, парсер отбрасывает их в остаток — он отработал ровно один раз и ровно один раз нашёл цифру, остальное его не волнует. Если хотим ещё, надо применять этот парсер ещё раз, но уже к остатку.</p>
+<p>В четвёртом случае парсеру не удалось найти цифру в начале текста, поэтому мы получили null.</p>
+<h1 id="Parser-pervyj-moj">Парсер первый мой</h1>
+<p>Примеры в этой статье будут преимущественно на TypeScript, так как он сравнительно легко читается даже без особых знаний самого языка.</p>
+<p>Давайте напишем парочку парсеров, которые пригодятся нам в дальнейшем. Сначала определение типов (куда ж без них!)</p>
+<pre><code class="language-ts">type ParseResult&lt;T&gt; = [T, string] | null;
+</code></pre>
+<p>Определим, что такое результат парсинга: это либо удача (что-то спарсили и какая-то строка осталась), либо неудача, которую обозначим <code>null</code>. Не пугайтесь <code>&lt;T&gt;</code>! Мы бы могли использовать <code>[string, string]</code>, но, как мы увидим далее, парсер может вернуть не только строку в качестве результата. Если вы ещё не знакомы с дженериками, то это описание следует читать как</p>
+<pre><code>тип РезультатПарсинга Чего-то (неизвестного пока нам типа Т) — это 
+	[Что-то, строка] или ничего
+</code></pre>
+<p>Тип парсера:</p>
+<pre><code class="language-ts">type Parser&lt;T&gt; = (input: string) =&gt; ParseResult&lt;T&gt;;
+// Парсер Чего-то (неизвестного пока нам типа Т) — это функция, принимающая строку и возвращающая РезультатПарсинга Чего-то типа Т
+</code></pre>
+<p>Итак, напишем сначала парсер строки. Он будет пытаться найти в начале текста заданную строку. Так можно искать, например, ключевые слова:</p>
+<pre><code class="language-ts">function pString(str: string): Parser&lt;string&gt; {
+	return (input: string) =&gt; {
+		if (input.startsWith(str))
+			return [str, input.substring(str.length)]
+		else
+			return null
+	}
+}
+</code></pre>
+<p>Функция <code>pString</code> создает парсер (функцию <code>string → ParseResult&lt;T&gt;</code>), который пытается найти заданную строку <code>str</code> в начале текста. Если удалось, то возвращает то, что нашёл и что осталось, иначе — <code>null</code> — ошибку. Посмотрим, как он работает:</p>
+<pre><code class="language-ts">&gt;&gt;&gt; const parser = pString(&quot;hello&quot;)
+&gt;&gt;&gt; parser(&quot;hello&quot;)
+[&quot;hello&quot;, &quot;&quot;]
+&gt;&gt;&gt; parser(&quot;hello, world!&quot;)
+[&quot;hello&quot;, &quot;, world!&quot;]
+&gt;&gt;&gt; parser(&quot;hi!&quot;)
+null
+</code></pre>
+<p>Теперь напишем ещё пару парсеров. Первый будет &quot;съедать&quot; символы, пока они соответствуют какому-то условию. Так можно будет гибко задавать некоторые последовательности символов:</p>
+<pre><code class="language-ts">function pSpanOf(predicate: (char: string) =&gt; boolean): Parser&lt;string&gt; {
+	return (input: string) =&gt; {
+		let i = 0;
+		while (i &lt; input.length) {
+			if (!predicate(input[i]))
+				break
+			i++
+		}
+		return [input.substring(0, i), input.substring(i)]
+	}
+}
+</code></pre>
+<p>Здесь функция <code>pSpanOf</code> создаёт парсер, который парсит все символы, пока выполняется переданный предикат, то есть функция <code>predicate</code> от очередного символа возвращает <code>true</code>.</p>
+<p>Сделаем ещё модификацию — <code>pNonEmptySpanOf</code>. Всё то же самое, но если ни один символ не попал под условие, то такой парсер упадёт с ошибкой:</p>
+<pre><code class="language-ts">function pNonEmptySpanOf(predicate: (char: string) =&gt; boolean): Parser&lt;string&gt; { 
+    return (input: string) =&gt; {
+        const result = pSpanOf(predicate)(input)
+        if (result == null) return null;
+        if (result[0].length == 0)
+            return null
+        else
+            return result
+    }
+}
+</code></pre>
+<p>Здесь мы воспользуемся уже готовым <code>pSpanOf</code> и просто проверим, есть ли хоть что-то в первом элементе результата (в котором, как известно, лежит то, что удалось спарсить).</p>
+<p>Проверим наши парсеры:</p>
+<pre><code class="language-ts">&gt;&gt;&gt; const pNatural = pNonEmptySpanOf(char =&gt; char in [&quot;0&quot;, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;])
+&gt;&gt;&gt; const pSpace = pSpanOf(char =&gt; char == &quot; &quot;)
+
+&gt;&gt;&gt; pNatural(&quot;123&quot;)
+[&quot;123&quot;, &quot;&quot;]
+&gt;&gt;&gt; pNatural(&quot;123cm&quot;)
+[&quot;123&quot;, &quot;cm&quot;]
+&gt;&gt;&gt; pNatural(&quot;hello&quot;)
+null
+&gt;&gt;&gt; pNatural(&quot;&quot;)
+null
+
+&gt;&gt;&gt; pSpace(&quot;   123&quot;)
+[&quot;   &quot;, &quot;123&quot;]
+&gt;&gt;&gt; pSpace(&quot;123&quot;)
+[&quot;&quot;, &quot;123&quot;]
+&gt;&gt;&gt; pSpace(&quot;&quot;)
+[&quot;&quot;, &quot;&quot;]
+</code></pre>
+<p>Всё работает!
+&quot;Зачем нам <code>pSpace</code>, который просто парсит пробелы? Это же бессмысленно!&quot; — может задаться справедливым вопросом читатель. Ответ прост: обычно в языках у нас слова (токены) разделены пробелами. Если мы захотим спарсить два числа, например, <code>123 456</code>, то у нас не получится просто последовательно два раза применить <code>pNatural</code>, так как после первого применения останется не <code>&quot;456&quot;</code>, а <code>&quot; 456&quot;</code>. Нам придётся применить <code>pSpace</code>, чтобы он &quot;съел&quot; все пробелы.</p>
+<blockquote>
+<p>Вообще, конечно, пробелами стоит считать не только сами пробелы, но и символы вроде табуляции и переноса строки.</p>
+</blockquote>
+<h1 id="Kombinatory">Комбинаторы</h1>
+<p>Теперь представим, что мы пишем язык для управления роботом. Пускай у нас будет команда <code>forward &lt;число&gt;</code>, которая заставит робота проехать вперёд сколько-то метров. Как спарсить такую строку? Давайте разберём её по частям.</p>
+<p>Парсинг <code>forward</code> довольно очевиден: <code>pString(&quot;forward&quot;)</code>. Парсинг числа, в целом, тоже: <code>pNatural</code>. С пробелами разберётся <code>pSpace</code>. Но нужно каким-то образом &quot;склеить&quot; эти три парсера, чтобы получился большой парсер, который либо спарсит <code>forward &lt;число&gt;</code>, либо не спарсит вообще ничего. И именно тут мы встречаемся с комбинаторами.</p>
+<p>Комбинатор парсеров — функция, которая позволяет создать из одних парсеров другой. И первый комбинатор, с которым мы познакомимся — <code>sequence</code>. Этот комбинатор будет парсить последовательность.</p>
+<pre><code class="language-ts">function pSequence&lt;T&gt;(...parsers: Parser&lt;T&gt;[]): Parser&lt;T[]&gt; {
+    return (input: string) =&gt; {
+        const results: T[] = []
+        for (const parser of parsers) {
+	        // Применяем последовательно каждый парсер
+            const result = parser(input)
+            // Если последовательность не удалась
+            if (result == null) return null
+            // Иначе добавляем результат и уменьшаем input
+            const [parsed, rest] = result
+			results.push(parsed);
+			input = rest;
+        }
+        return [results, input]
+    }
+}
+</code></pre>
+<p>Комбинатор последовательности создаётся с некоторой последовательностью парсеров  (в TypeScript происходит распаковка массива. Читай как просто все аргументы <code>pSequence</code> складываются в массив <code>parsers</code>). Полученный парсер пытается по очереди применить все переданные парсеры. Если на каком-то из этапов произошла ошибка, то вся последовательность не удалась, и возвращается null. Иначе вернём всю последовательность и то, что осталось спарсить.</p>
+<p>Примерно так мы сможем его использовать:</p>
+<pre><code class="language-ts">const p = pSequence(
+    pString(&quot;forward&quot;),
+    pSpace,
+    pNatural
+)
+
+console.log(p(&quot;forward 45&quot;))
+console.log(p(&quot;forward&quot;))
+console.log(p(&quot;forward45&quot;))
+
+// Вывод:
+// [[&quot;forward&quot;, &quot; &quot;, &quot;45&quot;], &quot;&quot;]
+// null
+// [[&quot;forward&quot;, &quot;&quot;, &quot;45&quot;], &quot;&quot;]
+</code></pre>
+<p><img src="assets/comb6.png" alt="" />
+Поздравляю, мы написали первый комбинатор!</p>
+<h1 id="Kombinator-vybora">Комбинатор выбора</h1>
+<p>У робота может быть команда не только &quot;вперёд&quot;, но и &quot;назад&quot;, а ещё &quot;повернуть на&quot;. Нам нужно создать такой парсер, который будет пытаться спарсить один из возможных вариантов. Напишем его:</p>
+<pre><code class="language-ts">function pOneOf&lt;T&gt;(...parsers: Parser&lt;T&gt;[]): Parser&lt;T&gt; {
+    return (input: string) =&gt; {
+        for (const parser of parsers) {
+            const result = parser(input)
+            if (result != null) 
+                return result;
+        }
+        return null;
+    }
+}
+</code></pre>
+<p>Этот парсер чуть-чуть похож на <code>pSequence</code>, только он возвращает первый удачный результат, а если ничего не подошло, то ошибку (null). Вот так мы можем расширить наш язык:</p>
+<pre><code class="language-ts">const p = pOneOf(
+    pSequence(
+        pString(&quot;forward&quot;),
+        pSpace,
+        pNatural
+    ),
+    pSequence(
+        pString(&quot;backward&quot;),
+        pSpace,
+        pNatural
+    ),
+    pSequence(
+        pString(&quot;rotate&quot;),
+        pSpace,
+        pNatural,
+        pSpace,
+        pOneOf(
+            pString(&quot;left&quot;),
+            pString(&quot;right&quot;)
+        )
+    )
+)
+
+console.log(p(&quot;forward 45&quot;))
+console.log(p(&quot;backward 45&quot;))
+console.log(p(&quot;rotate 45 left&quot;))
+console.log(p(&quot;rotate 30 right&quot;))
+
+// Вывод:
+// [[&quot;forward&quot;, &quot; &quot;, &quot;45&quot;], &quot;&quot;]  
+// [[&quot;backward&quot;, &quot; &quot;, &quot;45&quot;], &quot;&quot;]  
+// [[&quot;rotate&quot;, &quot; &quot;, &quot;45&quot;, &quot; &quot;, &quot;left&quot;], &quot;&quot;]  
+// [[&quot;rotate&quot;, &quot; &quot;, &quot;30&quot;, &quot; &quot;, &quot;right&quot;], &quot;&quot;]
+</code></pre>
+<p>Так как все парсеры у нас — функции, то есть, обычные значения, то для удобочитаемости, можем разложить их по переменным:</p>
+<pre><code class="language-ts">const pForward = pSequence(
+    pString(&quot;forward&quot;),
+    pSpace,
+    pNatural
+)
+const pBackward = pSequence(
+    pString(&quot;backward&quot;),
+    pSpace,
+    pNatural
+)
+const pRotate = pSequence(
+    pString(&quot;rotate&quot;),
+    pSpace,
+    pNatural,
+    pSpace,
+    pOneOf(pString(&quot;left&quot;), pString(&quot;right&quot;))
+)
+const p = pOneOf(pForward, pBackward, pRotate)
+</code></pre>
+<p>Напишем ещё комбинатор <code>pOptional</code>. По сути, он будет подавлять любую ошибку, то есть, будет говорить: &quot;не получилось — ну и не надо, возьмём значение по умолчанию&quot;.</p>
+<pre><code class="language-ts">function pOptional&lt;T&gt;(parser: Parser&lt;T&gt;, defaultValue: T): Parser&lt;T&gt; {
+    return (input: string) =&gt; {
+        const result = parser(input)
+        if (result != null)
+            return result
+        else
+            return [defaultValue, input]
+    }
+}
+</code></pre>
+<p>Как мы можем его использовать? Ну, например, сделать повороты по умолчанию направо, если не указано обратное:</p>
+<pre><code class="language-ts">const pRotate = pSequence(
+    pString(&quot;rotate&quot;),
+    pSpace,
+    pNatural,
+    pSpace,
+    pOptional(pOneOf(pString(&quot;left&quot;), pString(&quot;right&quot;)), &quot;left&quot;)
+)
+
+console.log(p(&quot;rotate 45&quot;))
+console.log(p(&quot;rotate 45 left&quot;))
+console.log(p(&quot;rotate 45 right&quot;))
+
+// Вывод:
+// [[&quot;rotate&quot;, &quot; &quot;, &quot;45&quot;, &quot;&quot;, &quot;left&quot;], &quot;&quot;]
+// [[&quot;rotate&quot;, &quot; &quot;, &quot;45&quot;, &quot; &quot;, &quot;left&quot;], &quot;&quot;]
+// [[&quot;rotate&quot;, &quot; &quot;, &quot;45&quot;, &quot; &quot;, &quot;right&quot;], &quot;&quot;]
+</code></pre>
+<h1 id="Kombinator-mnozhestva">Комбинатор множества</h1>
+<p>Пока что мы умеем парсить лишь одну команду. Ясное дело, команд в программе должно быть много. Напишем комбинатор, который позволит применять один и тот же парсер, пока это возможно:</p>
+<pre><code class="language-ts">function pZeroOrMany&lt;T&gt;(parser: Parser&lt;T&gt;): Parser&lt;T[]&gt; {
+    return (input: string) =&gt; {
+        const results: T[] = []
+        let result = null
+        while (true) {
+            result = parser(input)
+            if (result == null) 
+		        break      
+            if (input == result[1]) 
+	            break // ничего не произошло, парсить дальше нет смысла
+            results.push(result[0])
+            input = result[1]
+        }
+        return [results, input]
+    }
+}
+</code></pre>
+<p>Здесь мы снова и снова пытаемся применить <code>parser</code> к входной строке. Если не удалось — выходим из цикла и возвращаем что есть. Если удалось — обновляем входную строку и сохраняем результат. Вот как мы можем его использовать:</p>
+<pre><code class="language-ts">const pForward = pSequence(
+    pString(&quot;forward&quot;),
+    pSpace,
+    pNatural,
+    pSpace
+)
+const pBackward = pSequence(
+    pString(&quot;backward&quot;),
+    pSpace,
+    pNatural,
+    pSpace
+)
+const pRotate = pSequence(
+    pString(&quot;rotate&quot;),
+    pSpace,
+    pNatural,
+    pSpace,
+    pOptional(pOneOf(pString(&quot;left&quot;), pString(&quot;right&quot;)), &quot;left&quot;),
+    pSpace
+)
+const pCommand = pOneOf(pForward, pBackward, pRotate)
+const pProgram = pZeroOrMany(pCommand)
+
+console.log(pProgram(&quot;forward 10 rotate 45 left backward 5&quot;))
+
+// Вывод:
+// [
+//   [
+//     [&quot;forward&quot;, &quot; &quot;, &quot;10&quot;, &quot; &quot;], 
+//     [&quot;rotate&quot;, &quot; &quot;, &quot;45&quot;, &quot; &quot;, &quot;left&quot;, &quot; &quot;], 
+//     [&quot;backward&quot;, &quot; &quot;, &quot;5&quot;, &quot;&quot;]
+//   ], 
+//   &quot;&quot;
+// ]
+</code></pre>
+<p>Заметьте, что теперь у нас каждая команда &quot;подчищает&quot; пробелы после себя — каждая <code>pSequence</code> команды кончается <code>pSpace</code>. Без этого нам бы пришлось писать что-то вроде <code>forward 10rotate 45 leftbackward 5</code>, иначе уже со второй команды ничего бы не работало, так как пробел перед ней забрать просто некому.</p>
+<p>Вряд ли мы хотим позволять пустые программы, поэтому давайте потребуем, чтобы в программе была хотя бы одна команда. Сделать это теперь проще простого:</p>
+<pre><code class="language-ts">function pOneOrMany&lt;T&gt;(parser: Parser&lt;T&gt;): Parser&lt;T[]&gt; {
+    return (input: string) =&gt; {
+        const result = pZeroOrMany(parser)(input)
+        if (result == null) return null
+        if (result[0].length == 0) return null
+        return result
+    }
+}
+</code></pre>
+<p>И теперь пустая программа является ошибкой:</p>
+<pre><code class="language-ts">const pProgram = pOneOrMany(pCommand)
+
+console.log(pProgram(&quot;&quot;))
+
+// Вывод:
+// null
+</code></pre>
+<h1 id="Sborka-rezultata">Сборка результата</h1>
+<p>Сейчас мы получаем не шибко полезные списки из строк. Хотелось бы вместо них получать объекты классов команд, например, или какие другие полезные объекты. Для этого нам потребуется необычный комбинатор <code>pMap</code>. Он будет применять некоторую функцию преобразования результата. Взгляните на его реализацию:</p>
+<pre><code class="language-ts">function pMap&lt;A, B&gt;(transform: (a: A) =&gt; B, parser: Parser&lt;A&gt;): Parser&lt;B&gt; {
+    return (input: string) =&gt; {
+        const result = parser(input)
+        if (result == null) return null
+        return [transform(result[0]), result[1]]
+    }
+}
+</code></pre>
+<p>Он принимает функцию преобразования и исходный парсер и возвращает парсер, который прогоняет сначала исходный парсер, а потом, если парсинг удался, прогоняет полученное значение через преобразование и возвращает новое значение.</p>
+<p>Теперь мы можем написать свои типы команд:</p>
+<pre><code class="language-ts">type Rotate = {cmd: &quot;rotate&quot;, angle: number, direction: string}
+type Forward = {cmd: &quot;forward&quot;, distance: number}
+type Backward = {cmd: &quot;backward&quot;, distance: number}
+type Command = Rotate | Forward | Backward
+</code></pre>
+<p>И преобразовывать текст в команды при парсинге:</p>
+<pre><code class="language-ts">const pForward: Parser&lt;Command&gt; = pMap(
+    ([_0, _1, distance, _2]: string[]) =&gt; 
+        ({cmd: &quot;forward&quot;, distance: parseInt(distance)}),
+    pSequence(
+        pString(&quot;forward&quot;),
+        pSpace,
+        pNatural,
+        pSpace
+    )
+)
+const pBackward: Parser&lt;Command&gt; = pMap(
+    ([_0, _1, distance, _2]: string[]) =&gt; 
+        ({cmd: &quot;backward&quot;, distance: parseInt(distance)}),
+    pSequence(
+        pString(&quot;backward&quot;),
+        pSpace,
+        pNatural,
+        pSpace
+    )
+)
+const pRotate: Parser&lt;Command&gt; = pMap(
+    ([_0, _1, angle, _2, direction, _3]: string[]) =&gt; 
+        ({cmd: &quot;rotate&quot;, angle: parseInt(angle), direction: direction}),
+    pSequence(
+        pString(&quot;rotate&quot;),
+        pSpace,
+        pNatural,
+        pSpace,
+        pOptional(pOneOf(pString(&quot;left&quot;), pString(&quot;right&quot;)), &quot;left&quot;),
+        pSpace
+    )
+)
+const pCommand = pOneOf(pForward, pBackward, pRotate)
+const pProgram = pOneOrMany(pCommand)
+</code></pre>
+<p>Здесь стоит немного остановиться, потому что код стал несколько сложнее. Первым аргументом в <code>pMap</code> мы передаём функцию-трансформер. Рассмотрим пример с <code>pForward</code>:</p>
+<pre><code class="language-ts">const pForward: Parser&lt;Command&gt; = pMap(
+    ([_0, _1, distance, _2]: string[]) =&gt; 
+        ({cmd: &quot;forward&quot;, distance: parseInt(distance)}),
+    pSequence(
+        pString(&quot;forward&quot;),
+        pSpace,
+        pNatural,
+        pSpace
+    )
+)
+</code></pre>
+<p>Как нам уже известно, <code>pSequence</code> просто возвращает последовательность из всего, что удалось спарсить. Трансформер как раз примет эту последовательность и соберёт из неё объект команды. В аргументах трансформера мы используем распаковку последовательности. Нас не интересуют ни пробелы, ни ключевое слово <code>forward</code>, поэтому на месте, куда придут их строки, мы вставляем переменные с <code>_</code>, говоря о том, что эти значения нам не понадобятся. На третью же позицию придёт прочитанное число, мы его сохраним в переменную <code>distance</code>, а затем преобразуем из строки в число.</p>
+<p>Посмотрим, как это работает:</p>
+<pre><code class="language-ts">console.log(pProgram(&quot;forward 10 rotate 45 right backward 5&quot;))
+</code></pre>
+<p>Вывод:</p>
+<pre><code class="language-json">[
+  [
+    {
+      &quot;cmd&quot;: &quot;forward&quot;,
+      &quot;distance&quot;: 10
+    },
+    {
+      &quot;cmd&quot;: &quot;rotate&quot;,
+      &quot;angle&quot;: 45,
+      &quot;direction&quot;: &quot;right&quot;
+    },
+    {
+      &quot;cmd&quot;: &quot;backward&quot;,
+      &quot;distance&quot;: 5
+    }
+  ],
+  &quot;&quot;
+]
+</code></pre>
+<h1 id="JSON">JSON</h1>
+<p>Ну а теперь, в качестве упражнения, попробуем спарсить JSON (или хотя бы какую-то его часть).</p>
+<p>Для начала, расширим определение пробела:</p>
+<pre><code class="language-ts">const pSpace = 
+	pSpanOf(char =&gt; char == &quot; &quot; || char == &quot;\n&quot; || char == &quot;\r&quot; || char == &quot;\t&quot;)
+</code></pre>
+<p>Далее пойдём с самого простого — с простых значений:</p>
+<ul>
+<li>числа</li>
+<li>boolean</li>
+<li>строки</li>
+<li>null</li>
+</ul>
+<blockquote>
+<p>Для простоты примеров я использую <code>any</code>, хотя можно попытаться вывести реальный тип.</p>
+</blockquote>
+<p>Числа у нас могут быть отрицательными и дробными. Расширим наш парсер:</p>
+<pre><code class="language-ts">const pNumber: Parser&lt;any&gt; = pMap(
+    ([sign, wholePart, fracPart]: string[]) =&gt; 
+	    parseFloat(sign + wholePart + &quot;.&quot; + fracPart),
+    pSequence(
+        pOptional(pString(&quot;-&quot;), &quot;&quot;), 
+        pNatural, 
+        pOptional(
+            pMap(
+                ([_, fracPart]: string[]) =&gt; fracPart, 
+                pSequence(pString(&quot;.&quot;), pNatural)
+            ),
+            &quot;&quot;,
+        )
+    )
+)
+</code></pre>
+<p>Что здесь происходит? Во-первых, у числа может быть, а может и не быть минуса в начале. Это отрабатывает <code>pOptional(pString(&quot;-&quot;), &quot;&quot;)</code>. Затем обязательно идёт целая часть числа. Затем, опционально, идёт точка и дробная часть. Мы используем <code>([_, fracPart]: string[]) =&gt; fracPart</code>, чтобы <code>pOptional</code> для дробной части возвращал не <code>[&quot;.&quot;, какое-то число в строке]</code>, а просто <code>какое-то число в строке</code>. Либо там будет пустая строка, если не нашлось нужной последовательности. Затем это всё обрабатывается во внешнем <code>pMap</code>. Там мы принимаем знак, целую часть и дробную. В зависимости от того, есть ли дробная часть, преобразовываем в float или в int.</p>
+<p>Парсинг строк мы намеренно упростим, не будем поддерживать escape-последовательности (<code>\n</code>, <code>\&quot;</code>, <code>\t</code>), чтобы не загружать читателя. Поэтому строка будет кончаться первой попавшейся кавычкой:</p>
+<pre><code class="language-ts">const pQuoted: Parser&lt;any&gt; = pMap(
+    ([_, str, __]: string[]) =&gt; str,
+    pSequence(
+        pString('&quot;'),
+        pSpanOf(char =&gt; char != '&quot;'),
+        pString('&quot;')
+    )
+)
+</code></pre>
+<p><code>pMap</code> здесь используется для того, чтобы отбрасывать кавычки и оставлять только само значение строки.</p>
+<p>Парсинг true/false/null максимально прост:</p>
+<pre><code class="language-ts">const pBoolean: Parser&lt;any&gt; = pMap(
+    (bool: string) =&gt; bool == &quot;true&quot;, 
+    pOneOf(pString(&quot;true&quot;), pString(&quot;false&quot;))
+)
+const pNull: Parser&lt;any&gt; = pMap(
+    (_: string) =&gt; null, 
+    pString(&quot;null&quot;)
+)
+</code></pre>
+<p>Теперь чуть сложнее, сделаем парсинг массива. Массив — последовательность значений через запятую. Взглянем на спецификацию JSON:
+<img src="assets/comb5.png" alt="" />
+Отлично, выглядит так, как будто нам надо сначала спарсить скобку, потом пробелы, потом значение, потом запятую, ещё одно значение и так далее. Потом закрывающая скобка. Напишем ещё один вспомогательный комбинатор, который позволит парсить несколько строк, разделённых чем-либо:</p>
+<pre><code class="language-ts">function pZeroOrMoreSeparatedBy&lt;T&gt;(parser: Parser&lt;T&gt;, parserSeparator: Parser&lt;any&gt;): Parser&lt;T[]&gt; {
+    return (input: string) =&gt; {
+        const results: T[] = []
+        // перед первым элементом не должно быть разделителя
+        let result = parser(input)
+        if (result == null) 
+            return [[], input]
+        results.push(result[0])
+        input = result[1]
+        while (true) {
+	        // перед всеми последующими элементами должен быть разделитель
+            const separatorResult = parserSeparator(input)
+            if (separatorResult == null) break
+            // парсим остаток от разделителя
+            result = parser(separatorResult[1])
+            if (result == null) break
+            results.push(result[0])
+            input = result[1]
+        }
+        return [results, input]
+    }
+}
+</code></pre>
+<p>Теперь легко и просто написать парсер списка:</p>
+<pre><code class="language-ts">const pList: Parser&lt;any&gt; = pMap(
+    ([_0, _1, values, _2, _3]: any[]) =&gt; values,
+    pSequence&lt;any&gt;(
+        pString(&quot;[&quot;),
+        pSpace,
+        pZeroOrMoreSeparatedBy(
+            pValue,  // pValue определим дальше
+            pSequence(pSpace, pString(&quot;,&quot;), pSpace)
+        ),
+        pSpace,
+        pString(&quot;]&quot;)
+    )
+)
+</code></pre>
+<p>Таким же образом пишем и парсер объекта:</p>
+<pre><code class="language-ts">const pKeyValuePair = pMap(
+    ([key, _0, _1, _2, value]: any[]) =&gt; [key, value],
+    // pValue определим дальше
+    pSequence(pQuoted, pSpace, pString(&quot;:&quot;), pSpace, pValue) 
+)
+
+const pObject: Parser&lt;any&gt; = pMap(
+    ([_0, _1, pairs, _2, _3]: any[]) =&gt; Object.fromEntries(pairs),
+    pSequence&lt;any&gt;(
+        pString(&quot;{&quot;),
+        pSpace,
+        pZeroOrMoreSeparatedBy(
+            pKeyValuePair,
+            pSequence(pSpace, pString(&quot;,&quot;), pSpace)
+        ),
+        pSpace,
+        pString(&quot;}&quot;)
+    )
+)
+</code></pre>
+<p>Все значения можно теперь объединить в один парсер <code>pValue</code>:</p>
+<pre><code class="language-ts">const pValue: Parser&lt;any&gt; = pLazy(
+	() =&gt; pOneOf(pQuoted, pBoolean, pNull, pNumber, pList)
+)
+</code></pre>
+<p>Стоп! Что здесь произошло? Откуда взялся <code>pLazy</code> и что он означает? Это небольшой костыль, который помогает преодолеть ограничения &quot;нетерпеливого&quot; вычисления (eager-evaluation). Взгляните на эту связку:</p>
+<pre><code class="language-ts">const pValue: Parser&lt;any&gt; = pOneOf(pQuoted, pBoolean, pNull, pNumber, pList)
+
+const pList = pMap(
+    ([_0, _1, values, _2, _3]: any[]) =&gt; values,
+    pSequence&lt;any&gt;(
+        pString(&quot;[&quot;),
+        pSpace,
+        pZeroOrMoreSeparatedBy(
+            pValue,
+            pSequence(pSpace, pString(&quot;,&quot;), pSpace)
+        ),
+        pSpace,
+        pString(&quot;]&quot;)
+    )
+)
+</code></pre>
+<p>В объявлении <code>pValue</code> мы ссылаемся <code>pList</code>, но в объявлении <code>pList</code> мы ссылаемся <code>pValue</code>. Получилась циклическая зависимость. Какая-то одна из этих переменных будет <code>undefined</code> на момент объявления другой (в зависимости от порядка объявления). Для того, чтобы этого избежать, вводим новый комбинатор:</p>
+<pre><code class="language-ts">function pLazy&lt;T&gt;(lazy: () =&gt; Parser&lt;T&gt;): Parser&lt;T&gt; {
+    return (input: string) =&gt; lazy()(input);
+}
+</code></pre>
+<p>По сути он принимает функцию, которая возвращает парсер. То есть создание парсера откладывается до момента, когда он реально понадобится. К этому моменту у нас уже будет объявлен и <code>pList</code> и <code>pObject</code>. Поэтому расположим объявление <code>pValue</code> над <code>pList</code> и <code>pObject</code>.</p>
+<p>На самом деле, это всё! Вы можете прямо сейчас вызвать <code>pValue</code> для JSON строки (с учётом ограничений на escape-последовательности):</p>
+<pre><code class="language-ts">console.log(pValue('{&quot;a&quot;: 1}'))
+// Вывод:
+// [{
+//  &quot;a&quot;: 1
+// }, &quot;&quot;] 
+
+console.log(pValue('{&quot;exercise&quot;: &quot;JSON&quot;, &quot;result&quot;: {&quot;is_successful&quot;: true, &quot;time_taken_hrs&quot;: 3}, &quot;tags&quot;: [&quot;parser&quot;, &quot;typescript&quot;]}'))
+// Вывод:
+// [{
+//   &quot;exercise&quot;: &quot;JSON&quot;,
+//   &quot;result&quot;: {
+//     &quot;is_successful&quot;: true,
+//     &quot;time_taken_hrs&quot;: 3
+//   },
+//   &quot;tags&quot;: [
+//     &quot;parser&quot;,
+//     &quot;typescript&quot;
+//   ]
+// }, &quot;&quot;] 
+</code></pre>
+<p>Поздравляю, вы только что написали свой собственный полноценный парсер!</p>
+<h1 id="Nemnozhko-formalizma">Немножко формализма</h1>
+<p>Давайте ещё раз посмотрим на наш код парсера JSON, отбросив map, lazy, аннотации типов и const, то есть только на грамматику без логики и костылей:</p>
+<pre><code class="language-ts">pNatural = 
+	pNonEmptySpanOf(char =&gt; char in [&quot;0&quot;, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;])
+
+pNumber = 
+    pSequence(
+        pOptional(pString(&quot;-&quot;), &quot;&quot;), 
+        pNatural, 
+        pOptional(
+			pSequence(pString(&quot;.&quot;), pNatural),
+            &quot;&quot;,
+        )
+    )
+pQuoted = 
+    pSequence(
+        pString('&quot;'),
+        pSpanOf(char =&gt; char != '&quot;'),
+        pString('&quot;')
+    )
+
+pBoolean = 
+    pOneOf(pString(&quot;true&quot;), pString(&quot;false&quot;))
+
+pNull =
+    pString(&quot;null&quot;)
+
+pValue = 
+	pOneOf(pQuoted, pBoolean, pNull, pNumber, pList, pObject)
+
+pList = 
+    pSequence(
+        pString(&quot;[&quot;),
+        pSpace,
+        pZeroOrMoreSeparatedBy(
+            pValue,
+            pSequence(pSpace, pString(&quot;,&quot;), pSpace)
+        ),
+        pSpace,
+        pString(&quot;]&quot;)
+    )
+
+pKeyValuePair = 
+    pSequence(pQuoted, pSpace, pString(&quot;:&quot;), pSpace, pValue)
+
+pObject = 
+    pSequence(
+        pString(&quot;{&quot;),
+        pSpace,
+        pZeroOrMoreSeparatedBy(
+            pKeyValuePair,
+            pSequence(pSpace, pString(&quot;,&quot;), pSpace)
+        ),
+        pSpace,
+        pString(&quot;}&quot;)
+    )
+</code></pre>
+<p>Теперь сделаем следующее:</p>
+<ul>
+<li>уберём префикс p</li>
+<li>перепишем все элементы pSequence просто через пробел</li>
+<li>перепишем все элементы pOneOf через вертикальную черту</li>
+<li>перепишем все pString просто строками в кавычках</li>
+<li>перепишем все pOptional как <code>[ какое-то выражение ]</code></li>
+<li>перепишем все pZeroOrMoreSeparatedBy(a, b) как  <code>[ a ] { b a }</code> (<code>{ x }</code> — означает &quot;сколько угодно x&quot;, т.е. по сути это <code>pZeroOrMany(x)</code> )</li>
+<li><code>natural</code> по сути это <code>pOneOrMany(pOneOf(pString(&quot;0&quot;), …, pString(&quot;9&quot;)))</code> перепишем его так же, выделив <code>pOneOf(pString(&quot;0&quot;), …, pString(&quot;9&quot;))</code> в отдельное правило <code>pDigit</code></li>
+</ul>
+<pre><code class="language-ebnf">digit = 
+	&quot;0&quot; | &quot;1&quot; | &quot;2&quot; | &quot;3&quot; | &quot;4&quot; | &quot;5&quot; | &quot;6&quot; | &quot;7&quot; | &quot;8&quot; | &quot;9&quot;
+
+natural = 
+	digit { digit }
+
+number = 
+	[ &quot;-&quot; ] 
+	natural 
+	[ &quot;.&quot; natural ]
+
+quoted = 
+	'&quot;'
+	{ любой символ не кавычка }
+	'&quot;'
+
+boolean = 
+    &quot;true&quot; | &quot;false&quot;
+
+null =
+	&quot;null&quot;
+
+list = 
+	&quot;[&quot;
+	space
+	[ value ]
+	{ space &quot;,&quot; space value }
+	space
+	&quot;]&quot;
+
+keyValuePair = 
+    quoted space &quot;:&quot; space value
+
+object = 
+    &quot;{&quot;
+	space
+	[ keyValuePair ]
+	{ space &quot;,&quot; space keyValuePair }
+	space
+	&quot;}&quot;
+
+value = 
+	quoted | boolean | null | number | list | object
+</code></pre>
+<p>Что же такое мы получили? Мы получили то, что называется Расширенной Формой Бэкуса-Наура (Extended Backus-Naur Form — EBNF). По сути, это способ описать грамматику языка: какие конструкции как описываются и где что можно записать. Интересно тут то, что наш код по сути выглядит (структурно) точно так же, мы сделали лишь некоторые косметические изменения, чтобы от языка программирования перейти к языку описания грамматик. На мой взгляд — это одно из главных преимуществ парсер-комбинаторов: код реализации выглядит так же, как и грамматика, что позволяет довольно просто его читать.</p>
+<p>Если вы заглянете на <a href="https://json.org">json.org</a>, то увидите это:</p>
+<pre><code>json
+	element
+
+value
+	object
+	array
+	string
+	number
+	&quot;true&quot;
+	&quot;false&quot;
+	&quot;null&quot;
+
+object
+	'{' ws '}'
+	'{' members '}'
+
+members
+	member
+	member ',' members
+
+member
+	ws string ws ':' element
+
+array
+	'[' ws ']'
+	'[' elements ']'
+
+elements
+	element
+	element ',' elements
+
+element
+	ws value ws
+
+string
+	'&quot;' characters '&quot;'
+	
+... и т.д.
+</code></pre>
+<p>На самом деле, получилось очень похоже!</p>
+<p>Обычно, грамматики языков описываются именно в таких формальных системах. Если вам интересно, вот несколько ссылок на грамматики разных языков программирования:</p>
+<ul>
+<li><a href="https://docs.oracle.com/javase/specs/jls/se26/html/jls-19.html">Java 26 syntax</a></li>
+<li><a href="https://docs.python.org/3/reference/grammar.html">Full Grammar Specification of Python</a></li>
+<li><a href="https://parrot.github.io/parrot-docs0/0.4.7/html/languages/lua/doc/lua51.bnf.html">Lua 5.1 grammar</a></li>
+</ul>
+<h1 id="Nemnogo-o-grustnom">Немного о грустном</h1>
+<p>Не бывает бочки мёда без ложки дёгтя. Парсер-комбинаторы имеют некоторое количество минусов. Среди главных:</p>
+<ul>
+<li>широкое использование функций легко может приводить к проблемам с производительностью и переполнению стека</li>
+<li>написание парсер-комбинаторов в языках с eager-evalutaion неизбежно влечёт необходимость писать lazy-комбинатор</li>
+</ul>
+<p>Кроме проблем с производительностью из-за большого количества вызовов функций, у нас постоянно пересоздаются строки из-за <code>substring</code>. Это можно бы было оптимизировать, не трогая строку, а возвращая &quot;курсор&quot; — сдвиг, индекс текущего символа.</p>
+<p>Ко всему прочему, красиво писать парсер-комбинаторы в языках, в которых парадигма функционального программирования стоит на втором, третьем и далее планах, может быть тяжело. Хороший пример тут — Python. Да, из-за отсутствия многострочных лямбд, такие парсеры могут выглядеть некрасиво. Но главные минусы вы уже видели в реализациях комбинаторов: постоянная проверка на null и не слишком удобный map, оборачивающий последовательность. Сравните, например, как парсинг числа выглядел бы на Haskell:</p>
+<pre><code class="language-haskell">pNumber :: Parser Float
+pNumber = do
+  sign &lt;- optionalOrEmptyString $ word &quot;-&quot;
+  wholePart &lt;- pNonEmptySpanOf isNumber
+  fracPart &lt;- optionalOrEmptyString (word &quot;.&quot; *&gt; pNonEmptySpanOf isNumber)
+  return $ read (sign ++ wholePart ++ &quot;.&quot; ++ fracPart)
+</code></pre>
+<p>Пожалуй, стоит написать вторую часть, где мы плавно перейдём к Haskell и напишем ещё более красивые парсеры :)</p>
+<p>Тем не менее, это не обнуляет плюсы парсер-комбинаторов!</p>
+<ul>
+<li>они выразительны — пишется буквально как описание грамматики, в чём мы уже убедились</li>
+<li>они модульны — легко тестировать и отлаживать</li>
+<li>вследствие предыдущего пункта переиспользуемость кода многократно повышается</li>
+<li>сравнительно просто пишутся и не требуют кодогенерации, как например, Yacc/ANTLR/другие генераторы парсеров</li>
+</ul>
+<h1 id="V-zakljuchenie">В заключение</h1>
+<p>За рамками данной статьи пришлось оставить:</p>
+<ul>
+<li>нормальную обработку ошибок (ожидалось &quot;{&quot; в строке 2, получили &quot;:&quot;)</li>
+<li>проблемы с левой рекурсией</li>
+<li>и некоторые другие нюансы</li>
+</ul>
+<p>Тем не менее, я надеюсь, что она вам была полезна и интересна и что вы теперь чуточку больше знаете об удивительном мире синтаксического анализа.</p>
+<p>Полный код примера на TypeScript можно найти в <a href="https://gist.github.com/Tapeline/d78a7e1a1a2ad3f8d24d1a0c06c36853">Gist</a>.</p>
+
+  </div>
+</div>
+
+  </div>
+</div>
+
+
+<footer class="pw-footer">
+  
+  Built with Paperwork
+  
+</footer>
+
+
+<script type="text/javascript" src="../script.js"></script>
+
+
+</body>
+</html>

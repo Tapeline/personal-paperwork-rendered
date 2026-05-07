@@ -1,0 +1,323 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>4. Проблемы продвижения — Concurrency notes</title>
+  <link rel="stylesheet" type="text/css" href="../../style.css">
+</head>
+<body class="">
+
+
+<nav class="pw-navbar">
+  <div class="pw-navbar-inner">
+    <button class="pw-navbar-menu-btn" id="pw-navbar-menu-btn" type="button" title="Menu">&#9776;</button>
+    <a class="pw-navbar-brand" href="../../">
+      Concurrency notes
+    </a>
+    <button class="pw-navbar-toc-btn" id="pw-navbar-toc-btn" type="button" title="Page TOC">&#9776;</button>
+    <div class="pw-navbar-search">
+      <input class="pw-navbar-search-input" id="pw-navbar-search" type="text" placeholder="Search...">
+    </div>
+  </div>
+</nav>
+
+
+<div class="pw-sidebar-overlay" id="pw-sidebar-overlay"></div>
+
+
+<aside class="pw-sidebar pw-sidebar-left" id="pw-sidebar-left">
+  <div class="pw-sidebar-inner">
+    <div class="pw-sidebar-title">Contents</div>
+    
+<a class="pw-toc-link" href="/Concurrency-notes/III-Sinhronizatsija-i-soglasovannost">Up to III. Синхронизация и согласованность</a>
+
+<ul class="pw-toc-tree">
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./Предисловие.html">Предисловие</a>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item is-expanded">
+      <button class="pw-toc-toggle" type="button">
+        <span class="pw-toc-arrow"></span>I. Фундаметальные понятия
+      </button>
+      <div class="pw-toc-children">
+        
+<ul class="pw-toc-tree">
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./1. Время, состояние, порядок.html">1. Время, состояние, порядок</a>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./2. Оси исполнения.html">2. Оси исполнения</a>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./3. Корректность и безопасность.html">3. Корректность и безопасность</a>
+    </li>
+    
+  
+</ul>
+
+      </div>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item is-expanded">
+      <button class="pw-toc-toggle" type="button">
+        <span class="pw-toc-arrow"></span>II. Память
+      </button>
+      <div class="pw-toc-children">
+        
+<ul class="pw-toc-tree">
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./1. Реальности железа.html">1. Реальности железа</a>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./2. Примитивы.html">2. Примитивы</a>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./3. Модели памяти.html">3. Модели памяти</a>
+    </li>
+    
+  
+</ul>
+
+      </div>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item is-expanded">
+      <button class="pw-toc-toggle" type="button">
+        <span class="pw-toc-arrow"></span>III. Синхронизация и согласованность
+      </button>
+      <div class="pw-toc-children">
+        
+<ul class="pw-toc-tree">
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./1. Модели согласованности.html">1. Модели согласованности</a>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./2. Блокирующая синхронизация.html">2. Блокирующая синхронизация</a>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./3. Неблокирующая синхронизация.html">3. Неблокирующая синхронизация</a>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./4. Проблемы продвижения.html">4. Проблемы продвижения</a>
+    </li>
+    
+  
+</ul>
+
+      </div>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item is-expanded">
+      <button class="pw-toc-toggle" type="button">
+        <span class="pw-toc-arrow"></span>IV. Эволюция парадигм
+      </button>
+      <div class="pw-toc-children">
+        
+<ul class="pw-toc-tree">
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./1. Эра процессов и потоков.html">1. Эра процессов и потоков</a>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./2. Эра передачи сообщений.html">2. Эра передачи сообщений</a>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./3. Эра асинхронности.html">3. Эра асинхронности</a>
+    </li>
+    
+  
+</ul>
+
+      </div>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item is-expanded">
+      <button class="pw-toc-toggle" type="button">
+        <span class="pw-toc-arrow"></span>V. Передний край
+      </button>
+      <div class="pw-toc-children">
+        
+<ul class="pw-toc-tree">
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./1. Структурированная конкурентность.html">1. Структурированная конкурентность</a>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./2. Ограниченные продолжения.html">2. Ограниченные продолжения</a>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./3. Безопасность, основанная на типах.html">3. Безопасность, основанная на типах</a>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./4. Альтернативные парадигмы.html">4. Альтернативные парадигмы</a>
+    </li>
+    
+  
+</ul>
+
+      </div>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item is-expanded">
+      <button class="pw-toc-toggle" type="button">
+        <span class="pw-toc-arrow"></span>VI. Формальная верификация
+      </button>
+      <div class="pw-toc-children">
+        
+<ul class="pw-toc-tree">
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./1. Проблемы традиционного тестирования.html">1. Проблемы традиционного тестирования</a>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./2. Темпоральная логика.html">2. Темпоральная логика</a>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./3. Проверка моделей.html">3. Проверка моделей</a>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./4. На практике.html">4. На практике</a>
+    </li>
+    
+  
+</ul>
+
+      </div>
+    </li>
+    
+  
+    
+    <li class="pw-toc-item">
+      <a class="pw-toc-link" href="./Использованная литература.html">Использованная литература</a>
+    </li>
+    
+  
+</ul>
+
+
+  </div>
+</aside>
+
+
+<aside class="pw-sidebar pw-sidebar-right" id="pw-sidebar-right">
+  <div class="pw-sidebar-inner">
+    <div class="pw-sidebar-title">On this page</div>
+    
+  </div>
+</aside>
+
+
+
+<div class="pw-hero">
+  <div class="pw-hero-inner">
+    <h1 class="pw-hero-title">4. Проблемы продвижения</h1>
+    <p class="pw-hero-subtitle">Concurrency notes</p>
+    <ul class="pw-hero-tags">
+      
+    </ul>
+<!--    <div class="pw-hero-search-wrap">-->
+<!--      <input class="pw-hero-search" id="pw-hero-search" type="text" placeholder="Search Concurrency notes...">-->
+<!--    </div>-->
+  </div>
+</div>
+
+
+
+<div class="pw-page has-hero">
+  <div class="pw-content-area">
+    
+<div class="pw-card">
+  <div class="pw-card-content">
+    
+  </div>
+</div>
+
+  </div>
+</div>
+
+
+<footer class="pw-footer">
+  
+  Built with <a href="https://github.com/Tapeline/paperwork-engine">Paperwork</a><br/>
+  With &lt;3 by Tapeline.
+  
+</footer>
+
+
+<script type="text/javascript" src="../../script.js"></script>
+
+
+</body>
+</html>
